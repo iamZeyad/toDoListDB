@@ -23,7 +23,7 @@ include_once '../models/Todo.php';
 $database = new Database();
 $dbConnection = $database->connect();
 //instantiate todo object
-$todo = new Todo($dbConnection);
+$bookamrk = new Bookmark($dbConnection);
 
 //Get the http GET request query parameter (e.g. ?id=140)
 if(!isset($_GET['id'])){
@@ -32,13 +32,13 @@ if(!isset($_GET['id'])){
     return;
 }
 //Read todo details
-$todo->setId($_GET['id']);
-if($todo->readOne()) {
+$bookamrk->setId($_GET['id']);
+if($bookamrk->readOne()) {
     $result = array(
-        'id' => $todo->getId(),
-        'todo' =>$todo->getTask(),
-        'dateAdded' => $todo->getDateAdded(),
-        'done' => $todo->getDone()
+        'id' => $bookamrk->getId(),
+        'title' =>$bookamrk->getTitle(),
+        'dateAdded' => $bookamrk->getDateAdded(),
+        'URL' => $bookamrk->getURL()
     );
     echo json_encode($result);
 } else {

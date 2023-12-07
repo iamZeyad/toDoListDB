@@ -2,11 +2,11 @@
 
 class Todo{
     private $id;
-    private $task;
+    private $URL;
+    private $title;
     private $dateAdded;
-    private $done = false;
     private $dbConnection;
-    private $dbTable = 'tasks';
+    private $dbTable = 'Bookmark';
 
 
 public function __construct($dbConnection){
@@ -15,32 +15,35 @@ public function __construct($dbConnection){
 public function getId() {
     return $this->id;
 }
-public function getTask() {
-    return $this->task;
+public function getURL() {
+    return $this->URL;
+}
+public function getTitle() {
+    return $this->title;
 }
 public function getDateAdded() {
     return $this->dateAdded;
 }
-public function getDone() {
-    return $this->done;
-}
+
 public function setId($id) {
     $this->id = $id;
 }
-public function setTask($task) {
-    $this->task = $task;
+public function setURL($URL) {
+    $this->URL = $URL;
+}
+public function setTitle($title) {
+    $this->title = $title;
 }
 public function setDateAdded($dateAdded) {
     $this->dateAdded = $dateAdded;
 }
-public function setDone($done) {
-    $this->done = $done;
-}
+
 public function create(){
-    $query = "INSERT INTO ". $this->dbTable. "(task, date_added, done) VALUES(:taskName, now(), false);";
+    $query = "INSERT INTO ". $this->dbTable. "(URL, title, date_added) VALUES(:URL, :title, now());";
     
     $stmt = $this->dbConnection->prepare($query);
-    $stmt->bindParam(":taskName", $this->task);
+    $stmt->bindParam(":URL", $this->URL);
+    $stmt->bindParam(":title", $this->title);
 
     if($stmt->execute()){
         return true;
@@ -56,15 +59,15 @@ public function readOne(){
     if($stmt->execute() && $stmt->rowCount()==1) {
         $result = $stmt->fetch(PDO::FETCH_OBJ);
         $this->id = $result->id;
-        $this->task = $result->task;
+        $this->URL = $result->URL;
         $this->dateAdded = $result->date_added;
-        $this->done = $result->done;
+        $this->title = $result->title;
         return true;
     }
     return false;
 }
 public function readAll(){
-    $query = "SELECT * FROM ". $this->dbTable." WHERE done= false";
+    $query = "SELECT * FROM ". $this->dbTable;
     $stmt = $this->dbConnection->prepare($query);
     if($stmt->execute() && $stmt->rowCount() > 0) {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -72,9 +75,10 @@ public function readAll(){
     return [];
 }
 public function update() {
-    $query = "UPDATE ". $this->dbTable." SET done=:done WHERE id=:id";
+    $query = "UPDATE ". $this->dbTable." SET URL=:URL, title=:title WHERE id=:id";
     $stmt = $this->dbConnection->prepare($query);
-    $stmt->bindParam(":done", $this->done);
+    $stmt->bindParam(":URL", $this->URL);
+    $stmt->bindParam(":title", $this->title);
     $stmt->bindParam("id", $this->id);
     if($stmt->execute() && $stmt->rowCount() == 1){
         return true;

@@ -29,14 +29,14 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: DELETE');
 
 include_once '../db/Database.php';
-include_once '../models/Todo.php';
+include_once '../models/Bookmark.php';
 
 //instantiate a DB object and connect
 
 $database = new Database();
 $dbConnection = $database->connect();
-//instantiate todo object
-$todo = new Todo($dbConnection);
+//instantiate Bookmark object
+$bookmark = new Bookmark($dbConnection);
 
 //Get the HTTP DELETE request JSON body
 $data = json_decode(file_get_contents('php://input'));
@@ -50,9 +50,9 @@ if(!$data || !$data->id) {
     $todo->setId($data->id);
     if($todo->delete()) {
         echo json_encode(
-            array('message'=> 'The todo item was deleted'));
+            array('message'=> 'The bookmark item was deleted'));
     } else {
         echo json_encode(
-            array('message' => 'no todo item was deleted'
+            array('message' => 'no bookmark item was deleted'
             ));
         }

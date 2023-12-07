@@ -25,34 +25,35 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 
 include_once '../db/Database.php';
-include_once '../models/Todo.php';
+include_once '../models/BookMark.php';
 
 //instantiate a DB object and connect
 
 $database = new Database();
 $dbConnection = $database->connect();
 //instantiate todo object
-$todo = new Todo($dbConnection);
+$bookmark = new $bookMark($dbConnection);
 //get teh http post request JSON body
 $data = json_decode(file_get_contents('php://input'), true);
 //if no task is included in the json body, return an error
-if(!$data || !isset($data['task'])) {
+if(!$data || !isset($data['title']) || !isset($data['URL'])) {
     http_response_code(422);
     echo json_encode(
-        array('message'=> 'Error missing required parameter task in the JSON body')
+        array('message'=> 'Error missing required parameter tilte and URL in the JSON body')
     );
     return;
 }
 //Create a todo item
-$todo->setTask($data['task']);
+$bookmark->setTitle($data['title']);
+$bookmark->setURL($data['URL']);
 if($todo->create()) {
     echo json_encode(
-        array('message'=>'A todo item was created')
+        array('message'=>'A Bookmark item was created')
     );
 }
 else{
     echo json_encode(
-        array('message'=> 'Error: No todo Item was created')
+        array('message'=> 'Error: No Bookmark Item was created')
     );
 
 }

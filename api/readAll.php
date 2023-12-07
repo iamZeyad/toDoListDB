@@ -16,20 +16,20 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Methods: GET');
 
 include_once '../db/Database.php';
-include_once '../models/Todo.php';
+include_once '../models/Bookmark.php';
 
 //instantiate a DB object and connect
 
 $database = new Database();
 $dbConnection = $database->connect();
 //instantiate todo object
-$todo = new Todo($dbConnection);
+$bookmark = new $bookamrk($dbConnection);
 
 //Get the http GET request for all the todo items
-$result = $todo->readAll();
+$result = $bookmark->readAll();
 if(!empty($result)) {
     echo json_encode($result);
 }
 else {
-    echo json_encode(array('message'=> 'No todo items were found'));
+    echo json_encode(array('message'=> 'No bookmark items were found'));
 }

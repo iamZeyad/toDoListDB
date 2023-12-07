@@ -1,12 +1,10 @@
-CREATE DATABASE todo_db;
-USE todo_db;
-CREATE TABLE tasks(
+CREATE DATABASE Bookmark_DB;
+USE Bookmark_DB;
+CREATE TABLE Bookmark(
     id MEDIUMINT NOT NULL AUTO_INCREMENT,
-    task VARCHAR(255) NOT NULL,
+    URL VARCHAR(255) NOT NULL,
+    title VARCHAR(50) NOT NULL,
     date_added DATETIME NOT NULL,
-    done BOOLEAN NOT NULL DEFAULT false,
     PRIMARY KEY (id)
 );
-INSERT INTO tasks(task, date_added) VALUES ('Workout', now());
-INSERT INTO tasks(task, date_added) VALUES ('Water the plants', now());
-INSERT INTO tasks(task, date_added) VALUES ('Call mom', now());
+INSERT INTO Bookmark(URL, title, date_added) VALUES ('www.google.com','google' ,now());
